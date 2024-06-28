@@ -7,6 +7,23 @@ Class MainWindow
     Public MaxClientVersion = 1000
     Public InstallIdentifier = 1
 
+    Public Sub New(args As String())
+        InitializeComponent()
+        If args.Length = 1 Then
+            If args(0).Contains("-LaunchIntegerScaler") Then
+                StartPossibleIntegerScalerExecutable()
+                Environment.Exit(0)
+                Return
+            End If
+        End If
+        If GetExecutableDirectory() = Path.GetDirectoryName(GetPossibleIntegerScalerExecutablePath) Then
+            MessageBox.Show("The application cannot be run from this folder!", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
+            Environment.Exit(0)
+            Return
+        End If
+        IsEnabled = True
+    End Sub
+
     Private Sub MainWindow_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         If Globalization.CultureInfo.CurrentCulture.Name.ToLower.StartsWith("es") Then
             CurrentLanguageInt = 1
@@ -40,8 +57,10 @@ Class MainWindow
 
     Public Sub UpdateScalingButton()
         If CheckScalingStatus() Then
+            ToggleScalingButton.Background = Brushes.Firebrick
             ToggleScalingButton.Content = AppTranslator.DisableScaling(CurrentLanguageInt)
         Else
+            ToggleScalingButton.Background = Brushes.Green
             ToggleScalingButton.Content = AppTranslator.EnableScaling(CurrentLanguageInt)
         End If
     End Sub

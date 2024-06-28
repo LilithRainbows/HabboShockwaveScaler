@@ -7,16 +7,8 @@ Module SingleInstance 'App framework must be disabled from project settings and 
                 MessageBox.Show("Program is already running!", "Error", MessageBoxButton.OK, MessageBoxImage.Error)
                 Return
             Else
-                Dim NewMainWindow As New MainWindow()
+                Dim NewMainWindow As New MainWindow(Args)
                 Dim NewApp As New Application()
-                If Args.Length = 1 Then
-                    If Args(0).Contains("-LaunchIntegerScaler") Then
-                        Directory.SetCurrentDirectory(NewMainWindow.GetExecutableDirectory)
-                        NewMainWindow.StartPossibleIntegerScalerExecutable()
-                        Environment.Exit(0)
-                        Return
-                    End If
-                End If
                 NewApp.Run(NewMainWindow)
             End If
         End Using
